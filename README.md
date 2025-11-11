@@ -4,7 +4,7 @@
 
 A lightweight Windower addon for **Final Fantasy XI** that displays the current and upcoming schedules for Dynamis Divergence zones.
 
-Never miss an open window again! This addon calculates the static 2-hour JST-based schedule and displays a full 6-hour forecast for all four zones, directly in your chat log.
+Never miss an open window again! This addon calculates the static 2-hour JST-based schedule for all four zones, directly in your chat log.
 
 ***
 
