@@ -11,7 +11,7 @@ Never miss an open window again! This addon calculates the static 2-hour JST-bas
 ## 🚀 Features
 
 * **JST Synced:** All times are perfectly synced to the official 0:00 JST schedule, regardless of your local time zone.
-* **6-Hour Forecast:** Instantly see the current status and the next two upcoming windows for every zone.
+* **2-Hour Forecast:** Instantly see the current status and the next two upcoming windows for every zone.
 * **Clear & Clean:** A simple, color-coded output makes it easy to read at a glance.
 * **Lightweight:** No complex libraries or dependencies. Just one file.
 
