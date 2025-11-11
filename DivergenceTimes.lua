@@ -78,7 +78,7 @@ end
 --[[
     Function: build_timeline_string
     
-    Simulates the next ~6 hours for a single zone and builds the
+    Simulates the next ~2 hours for a single zone and builds the
     "Open (30m) > Closed (60m) > Open (60m)" string.
     
     Parameters:
