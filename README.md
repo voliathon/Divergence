@@ -56,6 +56,6 @@ This will print a tidy, color-coded schedule to your local chat log (using color
 
 ## ⚖️ Copyright
 
-Copyright (c) 2024 Voliathon
+Copyright (c) 2025 Voliathon
 
 This addon is for personal use and may be freely distributed and modified, provided this copyright notice remains intact.
