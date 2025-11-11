@@ -34,18 +34,20 @@ Simply type the following command in-game:
 
 ```sh
 //divtimes
-
+```
 *(You can also use the alias: `//div`)*
 
 ### Example Output
 
 This will print a tidy, color-coded schedule to your local chat log (using color code 207):
 
-```---------- Divergence Schedule (JST: 04:30) -----------
+```
+---------- Divergence Schedule (JST: 04:30) -----------
 ------- San d'Oria  : Open (30m) > Closed (60m) > Open (60m)-------
 ------- Bastok      : Open (60m) > Closed (30m) > Closed (30m)-------
 ------- Windurst    : Closed (30m) > Open (60m) > Closed (60m)-------
 ------- Jeuno       : Closed (60m) > Open (30m) > Open (30m)-------```
+```
 
 * **Open** is colored <font color="green">**Green**</font>.
 * **Closed** is colored <font color="gray">**Gray**</font>.
