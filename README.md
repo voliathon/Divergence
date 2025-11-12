@@ -46,7 +46,7 @@ This will print a tidy, color-coded schedule to your local chat log (using color
 ------- San d'Oria  : Open (30m) > Closed (60m) > Open (60m)-------
 ------- Bastok      : Open (60m) > Closed (30m) > Closed (30m)-------
 ------- Windurst    : Closed (30m) > Open (60m) > Closed (60m)-------
-------- Jeuno       : Closed (60m) > Open (30m) > Open (30m)-------```
+------- Jeuno       : Closed (60m) > Open (30m) > Open (30m)-------
 ```
 
 * **Open** is colored <font color="green">**Green**</font>.
