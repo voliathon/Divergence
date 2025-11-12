@@ -4,7 +4,7 @@
 ]]
 _addon.name = 'DivergenceTimes'
 _addon.author = 'Voliathon'
-_addon.version = '1.0.1' -- Version updated
+_addon.version = '2.1.2' -- Version updated for bug fix
 _addon.commands = {'divtimes', 'div'}
 
 -- Copyright (c) 2025 Voliathon
@@ -39,6 +39,15 @@ local zone_schedules = {
         {90, 120, 'Open'}    -- JST 1:30-2:00 (Open)
     }
 }
+
+-- ** Color codes for each zone name (Using brighter colors) **
+local zone_colors = {
+    ['San d\'Oria'] = '\31\004', -- Bright Red (/say)
+    ['Bastok'] = '\31\208',     -- Bright Blue (Addon)
+    ['Windurst'] = '\31\204',   -- Lime Green (/party)
+    ['Jeuno'] = '\31\001',      -- White/Yellow (/emote)
+}
+local reset_color = '\31\207' -- Default light purple
 
 
 --[[
@@ -78,47 +87,46 @@ end
 --[[
     Function: build_timeline_string
     
-    Simulates the next ~2 hours for a single zone and builds the
-    "Open (30m) > Closed (60m) > Open (60m)" string.
+    Builds the formatted string for a single zone's CURRENT status.
     
     Parameters:
     - zone: The string name of the zone (e.g., 'San d'Oria').
     - start_cycle_minute: The current minute (0-119) to start from.
+    - jst_minutes_today: The total minutes past JST midnight.
     
     Returns:
     - A formatted string with color codes.
 ]]
-local function build_timeline_string(zone, start_cycle_minute)
+local function build_timeline_string(zone, start_cycle_minute, jst_minutes_today)
     local timeline_str = ""
-    local sim_minute = start_cycle_minute
+
+    -- ** THE FIX: These lines MUST come first **
+    -- We get the status and duration *before* we try to use them
+    local status, duration = get_status_at_minute(zone, start_cycle_minute)
     
-    -- Loop 3 times to get the current state + the next 2 states
-    for i = 1, 3 do
-        -- Modulo 120 ensures the simulation wraps around the 2-hour cycle
-        local check_minute = sim_minute % 120
-        
-        -- Get the status and duration for this simulated block
-        local status, duration = get_status_at_minute(zone, check_minute)
-        
-        -- Define Windower color codes
-        local status_color = (status == 'Open') and '\31\204' or '\31\160' -- Green for Open, Grey for Closed
-        local reset_color = '\31\207' -- Default chat color
-        
-        -- Build the string part, e.g., "Open (30m)"
-        timeline_str = timeline_str .. string.format("%s%s (%dm)%s", status_color, status, duration, reset_color)
-        
-        -- Add the arrow separator, but not on the last loop
-        if i < 3 then
-            timeline_str = timeline_str .. " > "
-        end
-        
-        -- Advance the simulation time
-        sim_minute = sim_minute + duration
+    -- Define Windower color codes for the status text
+    local status_color = (status == 'Open') and '\31\204' or '\31\160' -- Green for Open, Grey for Closed
+    
+    -- Calculate the exact JST time of the next change
+    local change_time_in_minutes = jst_minutes_today + duration
+    local change_hour = math.floor(change_time_in_minutes / 60) % 24
+    local change_minute = change_time_in_minutes % 60
+    local time_string = string.format("%02d:%02d", change_hour, change_minute)
+    
+    -- New wording based on status
+    if status == 'Open' then
+        timeline_str = string.format("%sOngoing (%d minutes remaining)%s - Closes at %s", status_color, duration, reset_color, time_string)
+    else
+        timeline_str = string.format("%sClosed for (%d more minutes)%s - Opens at %s", status_color, duration, reset_color, time_string)
     end
     
-    -- Return the fully formatted line, e.g., " San d'Oria : Open (30m) > ..."
+    -- Add pipe and zone-specific color
+    -- Get the zone's color, or use the reset_color as a fallback
+    local zone_color = zone_colors[zone] or reset_color
+    
+    -- Return the fully formatted line, e.g., "| San d'Oria : ..."
     -- '%-12s' pads the zone name to 12 characters for clean alignment
-    return string.format(' %-12s: %s', zone, timeline_str)
+    return string.format(' | %s%-12s%s: %s', zone_color, zone, reset_color, timeline_str)
 end
 
 
@@ -148,18 +156,20 @@ windower.register_event('addon command', function(...)
     -- Calculate JST hour for display (e.g., (14 + 9) % 24 = 23)
     local jst_hour = (utc.hour + 9) % 24
     local time_str = string.format("%02d:%02d", jst_hour, utc.min)
-    local header_message = '--- Divergence Schedule (JST: '.. time_str ..') ---'
+    
+    -- New header text and format
+    local header_message = '*** Divergence Shared Schedule (Current time in Japan(JST): '.. time_str ..') ***'
     
     -- windower.add_to_chat(color, message) prints to the local chat log
     -- Color 207 is a light purple
-    windower.add_to_chat(207, '-------' .. header_message .. '-------')
+    windower.add_to_chat(207, header_message)
 
     -- Step 5: Loop through zones and print their timelines
     for _, zone in ipairs(ordered_zones) do
         -- Call our helper function to build the forecast string
-        local zone_message = build_timeline_string(zone, current_cycle_minute)
+        local zone_message = build_timeline_string(zone, current_cycle_minute, jst_minutes_today)
         
-        -- Print the final string to the chat log
-        windower.add_to_chat(207, '-------' .. zone_message .. '-------')
+        -- Removed the '-------' wrapper
+        windower.add_to_chat(207, zone_message)
     end
 end)
