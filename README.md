@@ -53,14 +53,12 @@ This will print a tidy, color-coded schedule to your local chat log (using color
 ```
 
 Zone names are colored: 
-	<font color="pink">San d'Oria</font> 
-	<font color="blue">Bastok</font> 
-	<font color="lime">Windurst</font>  
-	<font color="white">Jeuno</font>
-
-    Ongoing is colored <font color="green">Green</font>.
-
-    Closed for is colored <font color="gray">Gray</font>.
+	1.  San d'Oria - Pink 
+	2.  Bastok - Blue 
+	3.  Windurst - Lime Green  
+	4.  Jeuno - White
+    5.  Ongoing is colored <font color="green">Green</font>.
+    6.  Closed for is colored <font color="gray">Gray</font>.
 
 ⚖️ Copyright
 
