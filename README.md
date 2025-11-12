@@ -1,5 +1,5 @@
 #  divergence-times
-[![version](https://img.shields.io/badge/version-1.0.1-blue.svg)](https://github.com/Voliathon/divergence-times)
+[![version](https://img.shields.io/badge/version-2.1.2-blue.svg)](https://github.com/Voliathon/divergence-times)
 [![author](https://img.shields.io/badge/author-Voliathon-lightgray.svg)](https://github.com/Voliathon)
 
 A lightweight Windower addon for **Final Fantasy XI** that displays the current and upcoming schedules for Dynamis Divergence zones.
@@ -11,8 +11,9 @@ Never miss an open window again! This addon calculates the static 2-hour JST-bas
 ## 🚀 Features
 
 * **JST Synced:** All times are synced to the official 0:00 JST schedule, regardless of your local time zone and rely on your System Clock.
-* **2-Hour Forecast:** Instantly see the current status and the next two upcoming windows for every zone.
-* **Clear & Clean:** A simple, color-coded output makes it easy to read at a glance.
+* **Exact Times:** Tells you the *exact JST time* of the next window change (e.g., "Closes at 14:30").
+* **At-a-Glance Status:** Shows only the *current* status, removing clutter.
+* **Clear & Clean:** A simple, color-coded output makes it easy to read.
 * **Lightweight:** No complex libraries or dependencies. Just one file.
 
 ***
@@ -32,29 +33,36 @@ Never miss an open window again! This addon calculates the static 2-hour JST-bas
 
 Simply type the following command in-game:
 
-```sh
-//divtimes
 ```
-*(You can also use the alias: `//div`)*
+//divtimes
+   or
+//div   
+```
 
-### Example Output
+Example Output
 
 This will print a tidy, color-coded schedule to your local chat log (using color code 207):
-
-```
----------- Divergence Schedule (JST: 04:30) -----------
-------- San d'Oria  : Open (30m) > Closed (60m) > Open (60m)-------
-------- Bastok      : Open (60m) > Closed (30m) > Closed (30m)-------
-------- Windurst    : Closed (30m) > Open (60m) > Closed (60m)-------
-------- Jeuno       : Closed (60m) > Open (30m) > Open (30m)-------
 ```
 
-* **Open** is colored <font color="green">**Green**</font>.
-* **Closed** is colored <font color="gray">**Gray**</font>.
+*** Divergence Shared Schedule (Current time in Japan(JST): 04:30) ***
+ | San d'Oria  : Ongoing (30 minutes remaining) - Closes at 05:00
+ | Bastok      : Ongoing (60 minutes remaining) - Closes at 05:30
+ | Windurst    : Closed for (30 more minutes) - Opens at 05:00
+ | Jeuno       : Closed for (60 more minutes) - Opens at 05:30
 
-***
+```
 
-## ⚖️ Copyright
+Zone names are colored: 
+	<font color="pink">San d'Oria</font> 
+	<font color="blue">Bastok</font> 
+	<font color="lime">Windurst</font>  
+	<font color="white">Jeuno</font>
+
+    Ongoing is colored <font color="green">Green</font>.
+
+    Closed for is colored <font color="gray">Gray</font>.
+
+⚖️ Copyright
 
 Copyright (c) 2025 Voliathon
 
