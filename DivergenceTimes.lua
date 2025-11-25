@@ -4,7 +4,7 @@
 ]]
 _addon.name = 'DivergenceTimes'
 _addon.author = 'Voliathon'
-_addon.version = '2.1.2' -- Version updated for bug fix
+_addon.version = '2.1.3' -- Version updated for logic fix
 _addon.commands = {'divtimes', 'div'}
 
 -- Copyright (c) 2025 Voliathon
@@ -54,6 +54,7 @@ local reset_color = '\31\207' -- Default light purple
     Function: get_status_at_minute
     
     Checks a zone's schedule against a specific minute in the cycle (0-119).
+    Now includes logic to check if the NEXT block continues the same status.
     
     Parameters:
     - zone_name: The string name of the zone (e.g., 'Bastok').
@@ -61,25 +62,35 @@ local reset_color = '\31\207' -- Default light purple
     
     Returns:
     - The status ("Open" or "Closed").
-    - The number of minutes remaining in that status block.
+    - The number of minutes remaining in that status block (handling wrap-arounds).
 ]]
 local function get_status_at_minute(zone_name, minute_in_cycle)
     local schedule = zone_schedules[zone_name]
     
-    -- Loop through the schedule blocks (e.g., {0, 30, 'Closed'})
-    for _, block in ipairs(schedule) do
+    for i, block in ipairs(schedule) do
         local start_min = block[1]
         local end_min = block[2]
         local status = block[3]
         
         -- Check if our current minute falls within this block
         if minute_in_cycle >= start_min and minute_in_cycle < end_min then
-            -- Found it. Return the status and time left.
-            return status, (end_min - minute_in_cycle)
+            local remaining = end_min - minute_in_cycle
+            
+            -- FIX: Check for wrap-around or consecutive blocks.
+            -- Identify the index of the next block (wrapping to 1 if we are at the end)
+            local next_index = (i % #schedule) + 1
+            local next_block = schedule[next_index]
+            
+            -- If the next block has the SAME status, add its duration to our remaining time
+            if next_block[3] == status then
+                local next_duration = next_block[2] - next_block[1]
+                remaining = remaining + next_duration
+            end
+            
+            return status, remaining
         end
     end
     
-    -- Fallback in case something goes wrong
     return 'Unknown', 0
 end
 
@@ -100,8 +111,6 @@ end
 local function build_timeline_string(zone, start_cycle_minute, jst_minutes_today)
     local timeline_str = ""
 
-    -- ** THE FIX: These lines MUST come first **
-    -- We get the status and duration *before* we try to use them
     local status, duration = get_status_at_minute(zone, start_cycle_minute)
     
     -- Define Windower color codes for the status text
@@ -121,11 +130,9 @@ local function build_timeline_string(zone, start_cycle_minute, jst_minutes_today
     end
     
     -- Add pipe and zone-specific color
-    -- Get the zone's color, or use the reset_color as a fallback
     local zone_color = zone_colors[zone] or reset_color
     
-    -- Return the fully formatted line, e.g., "| San d'Oria : ..."
-    -- '%-12s' pads the zone name to 12 characters for clean alignment
+    -- Return the fully formatted line
     return string.format(' | %s%-12s%s: %s', zone_color, zone, reset_color, timeline_str)
 end
 
@@ -137,39 +144,29 @@ end
 ]]
 windower.register_event('addon command', function(...)
     -- Step 1: Get the current time in UTC
-    -- 'os.date("!*t")' gets the time in UTC, ignoring local timezone
     local utc = os.date('!*t')
     
     -- Step 2: Convert UTC to JST (JST is UTC+9)
-    -- We calculate total minutes past midnight for both
     local utc_minutes_today = (utc.hour * 60) + utc.min
     local jst_minutes_today = utc_minutes_today + 540 -- 540 minutes = 9 hours
     
     -- Step 3: Find our current position in the 120-minute cycle
-    -- The modulo operator (%) gives us the remainder
     local current_cycle_minute = jst_minutes_today % 120
 
     -- Define the order to print zones
     local ordered_zones = {'San d\'Oria', 'Bastok', 'Windurst', 'Jeuno'}
 
     -- Step 4: Print the Header
-    -- Calculate JST hour for display (e.g., (14 + 9) % 24 = 23)
     local jst_hour = (utc.hour + 9) % 24
     local time_str = string.format("%02d:%02d", jst_hour, utc.min)
     
-    -- New header text and format
     local header_message = '*** Divergence Shared Schedule (Current time in Japan(JST): '.. time_str ..') ***'
     
-    -- windower.add_to_chat(color, message) prints to the local chat log
-    -- Color 207 is a light purple
     windower.add_to_chat(207, header_message)
 
     -- Step 5: Loop through zones and print their timelines
     for _, zone in ipairs(ordered_zones) do
-        -- Call our helper function to build the forecast string
         local zone_message = build_timeline_string(zone, current_cycle_minute, jst_minutes_today)
-        
-        -- Removed the '-------' wrapper
         windower.add_to_chat(207, zone_message)
     end
 end)
