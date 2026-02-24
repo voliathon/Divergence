@@ -1,4 +1,4 @@
-#  divergence-times
+#  DivergenceTimes
 [![version](https://img.shields.io/badge/version-2.1.3-blue.svg)](https://github.com/Voliathon/divergence-times)
 [![author](https://img.shields.io/badge/author-Voliathon-lightgray.svg)](https://github.com/Voliathon)
 
