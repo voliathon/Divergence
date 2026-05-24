@@ -1,5 +1,5 @@
 #  Divergence
-[![version](https://img.shields.io/badge/version-2.1.3-blue.svg)](https://github.com/Voliathon/divergence)
+[![version](https://img.shields.io/badge/version-1.0.1-blue.svg)](https://github.com/Voliathon/divergence)
 [![author](https://img.shields.io/badge/author-Voliathon-lightgray.svg)](https://github.com/Voliathon)
 
 A lightweight Windower addon for **Final Fantasy XI** that displays the current and upcoming schedules for Dynamis Divergence zones.
