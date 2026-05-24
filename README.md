@@ -1,5 +1,5 @@
-#  DivergenceTimes
-[![version](https://img.shields.io/badge/version-2.1.3-blue.svg)](https://github.com/Voliathon/divergence-times)
+#  Divergence
+[![version](https://img.shields.io/badge/version-2.1.3-blue.svg)](https://github.com/Voliathon/divergence)
 [![author](https://img.shields.io/badge/author-Voliathon-lightgray.svg)](https://github.com/Voliathon)
 
 A lightweight Windower addon for **Final Fantasy XI** that displays the current and upcoming schedules for Dynamis Divergence zones.
@@ -21,9 +21,9 @@ Never miss an open window again! This addon calculates the static 2-hour JST-bas
 ## ⚙️ Installation
 
 1.  Navigate to your Windower addons folder (usually `Windower4/addons/`).
-2.  Create a new folder named `DivergenceTimes`.
-3.  Inside that folder, create a new file named `DivergenceTimes.lua`.
-4.  Copy and paste the entire contents of the `DivergenceTimes.lua` file into your new file.
+2.  Create a new folder named `Divergence`.
+3.  Inside that folder, create a new file named `Divergence.lua`.
+4.  Copy and paste the entire contents of the `Divergence.lua` file into your new file.
 5.  Save the file.
 6.  In-game, run the command `//lua r divergetimes` or restart Windower.
 
