@@ -4,7 +4,7 @@
 ]]
 _addon.name = 'Divergence'
 _addon.author = 'Voliathon'
-_addon.version = '2.1.3' -- Version updated for logic fix
+_addon.version = '1.0.1' -- Version updated for logic fix
 _addon.commands = {'divtimes', 'div'}
 
 -- Copyright (c) 2025 Voliathon
